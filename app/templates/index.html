@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="../../dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <title>index</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>成绩查询系统</h1>
+        <form method="GET" action="/search">
+            
+            {% if session["keyword"] %}
+            <input type="text" name ="keyword" value="{{ session['keyword'] }}" >
+            {% else %}
+            <input type="text" name ="keyword" >
+            {% endif %}
+            <input type="submit" class="btn btn-xs btn-default" value="搜索" ><br>
+
+            <input type="radio" name="mode" value="Sno" checked="checked" > <span class="label label-default">学号</span>
+            {% if session['mode'] == "Sname" %}
+            <input type="radio" name="mode" value="Sname" checked="checked" > <span class="label label-default" >姓名</span>
+            {% else %}
+            <input type="radio" name="mode" value="Sname"> <span class="label label-default">姓名</span>
+            {% endif %}
+
+            {% if session['mode'] == "Cname" %}
+            <input type="radio" name="mode" value="Cname" checked="checked" > <span class="label label-default" >课程名</span>
+            {% else %}
+            <input type="radio" name="mode" value="Cname"> <span class="label label-default">课程名</span>
+            {% endif %}
+
+            {% if session['mode'] == "Cname" %}
+            <input type="radio" name="mode" value="all" checked="checked" > <span class="label label-default" >所有</span>
+            {% else %}
+            <input type="radio" name="mode" value="all"> <span class="label label-default">所有</span>
+            {% endif %}
+        </form>
+
+        <form method="POST" action="/change">
+            <p>
+                <span>
+                    <input type="radio" id="all"> <span class="label label-default">全选</span>
+                    <input type="radio" id="reverse"> <span class="label label-default">反向</span> 
+                    <input type="submit" class="btn btn-xs btn-default" value="添加">
+                    <input type="submit" class="btn btn-xs btn-default" value="修改">
+                    <input type="submit" class="btn btn-xs btn-default" value="删除">
+                </span>
+            </p>
+            <table <table class="table table-striped">
+                <tr>
+                    <th>选取</th>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>课程名</th>
+                    <th>成绩</th><br>
+                </tr>
+                {% for col in table %}
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>{{ col['Sno'] }}</td>
+                    <td>{{ col["Sname"] }}</td>
+                    <td>{{ col['Cname'] }}</td>
+                    <td>{{ col['Score'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% if session['page'] != 1 %}
+            <a class="btn btn-xs btn-default" type="submit"  name="pagebutton" value="lastpage" href="/?rsvpage=-1"> 上一页  </a >
+            {% endif %}
+
+            {% if session['page'] != session['pages'] and session['pages']!=0 %}
+            <a class="btn btn-xs btn-default" type="submit" name="pagebutton" value="nextpage" href="/?rsvpage=1"> 下一页</a >
+            {% endif %}
+
+
+        </form>
+    </div>
+</body>
